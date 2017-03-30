@@ -194,19 +194,4 @@ extension UIViewController : UIImagePickerControllerDelegate {
     }
     
     
-//    - (AVAssetExportSession*)configureExportSession:(AVAssetExportSession*)session
-//    outputURL:(NSString*)outputURL
-//    startMilliseconds:(int)start
-//    endMilliseconds:(int)end {
-//    
-//    session.outputURL = [NSURL fileURLWithPath:outputURL];
-//    session.outputFileType = AVFileTypeQuickTimeMovie;
-//    CMTimeRange timeRange = CMTimeRangeMake(CMTimeMake(start, 1000), CMTimeMake(end - start, 1000));
-//    session.timeRange = timeRange;
-//    
-//    return session;
-//    }
-    
-    
-    
 }
