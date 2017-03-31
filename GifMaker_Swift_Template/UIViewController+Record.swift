@@ -103,10 +103,6 @@ extension UIViewController : UIImagePickerControllerDelegate {
     //gif conversion methods
     func convertVideoToGIF(videoURL: URL, start: NSNumber?, duration: NSNumber?){
         
-        DispatchQueue.main.async {
-            self.dismiss(animated: true, completion: nil)
-        }
-        
         let regift: Regift;
         
         if let start = start {
@@ -119,7 +115,11 @@ extension UIViewController : UIImagePickerControllerDelegate {
         
         let gifURL = regift.createGif()
         let gif = Gif(url: gifURL!, videoURL: videoURL as URL, caption: nil)
-        displayGIF(gif)
+        
+        DispatchQueue.main.async {
+            self.dismiss(animated: true, completion: nil)
+            self.displayGIF(gif)
+        }
     }
     
     func displayGIF(_ gif: Gif){
@@ -173,24 +173,24 @@ extension UIViewController : UIImagePickerControllerDelegate {
         
     func createPath()->String{
         
-        var docPath:URL? = nil
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0]
-        let docDir = URL(fileURLWithPath: path)
-        let outPath = docDir.appendingPathComponent("output")
+        var outPath = path.appending("/output")
         do {
-            try FileManager.default.createDirectory(at: outPath, withIntermediateDirectories: true, attributes: nil)
-        
-            docPath = outPath.appendingPathComponent("output.mov")
-        
-            try FileManager.default.removeItem(at: docPath!)
-            
-        } catch let error as NSError {
-            NSLog("Unable to create directory \(error.debugDescription)")
+            try FileManager.default.createDirectory(atPath: outPath, withIntermediateDirectories: true, attributes: nil)
+        } catch let error as NSError{
+            print(error.localizedDescription)
         }
         
-        let absstring = docPath?.absoluteString
+        outPath = outPath.appending("output.mov")
         
-        return absstring!
+        do {
+            try FileManager.default.removeItem(atPath: outPath)
+        } catch let error as NSError{
+            print(error.localizedDescription)
+        }
+
+        
+        return outPath
     }
     
     
